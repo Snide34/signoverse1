@@ -345,7 +345,7 @@ class _TranslationScreenState extends State<TranslationScreen> {
             child: _buildMainContent(), // Use the main content builder
           ),
           // --- Custom Bottom Navigation Bar ---
-          const AppNavigationBar(currentIndex: 1),
+          AppNavigationBar(currentIndex: 1, onItemSelected: (int value) {  },),
         ],
       ),
     );

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-namespace = "com.example.signoversee"
+namespace = "com.example.signoverse"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -21,7 +21,7 @@ namespace = "com.example.signoversee"
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.signoversee"
+        applicationId = "com.example.signoverse"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

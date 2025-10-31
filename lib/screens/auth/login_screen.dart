@@ -42,11 +42,11 @@ class LoginScreen extends StatelessWidget {
             // Form Fields
             const CustomTextField(
               labelText: 'Email or Mobile Number',
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.emailAddress, initialValue: '',
             ),
             const CustomTextField(
               labelText: 'Password',
-              isPassword: true,
+              isPassword: true, initialValue: '',
             ),
 
             // Forget Password Link

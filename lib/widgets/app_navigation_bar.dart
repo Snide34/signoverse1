@@ -1,101 +1,80 @@
-// lib/widgets/app_navigation_bar.dart (UPDATED to match the new image)
-
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
-import '../screens/home_screen.dart';
-// NOTE: Make sure your screens (e.g., TranslationScreen) are imported
-// if you want to use the pushReplacement logic.
 
+/// A custom, aesthetically pleasing bottom navigation bar for the application.
 class AppNavigationBar extends StatelessWidget {
+  /// The currently selected index (0-4).
   final int currentIndex;
 
-  // Custom icons to match the image:
-  // Home, Translate (Text Swap), Dictionary (Book A-Z), Learning (Grad Cap), Profile
-  static const List<_NavItem> _items = [
-    _NavItem(icon: Icons.home_outlined, label: 'Home', index: 0),
-    _NavItem(icon: Icons.translate_outlined, label: 'Translate', index: 1), // Using a standard icon for translation swap
-    _NavItem(icon: Icons.menu_book_outlined, label: 'Dictionary', index: 2),
-    _NavItem(icon: Icons.school_outlined, label: 'Learning', index: 3),
-    _NavItem(icon: Icons.person_outline, label: 'Profile', index: 4),
-  ];
+  /// Callback function when a navigation item is tapped.
+  final ValueChanged<int> onItemSelected;
 
   const AppNavigationBar({
     super.key,
-    this.currentIndex = 0,
+    required this.currentIndex,
+    required this.onItemSelected,
   });
 
-  // Helper method to determine the destination screen (for basic routing)
-  Widget _getScreen(int index) {
-    // Returning HomeScreen as a placeholder for screens we haven't created yet
-    return const HomeScreen();
-  }
+  // Define the navigation items
+  final List<Map<String, dynamic>> navItems = const [
+    {'icon': Icons.home_rounded, 'label': 'Home', 'index': 0},
+    {'icon': Icons.connect_without_contact_rounded, 'label': 'Translate', 'index': 1},
+    {'icon': Icons.menu_book_rounded, 'label': 'Dictionary', 'index': 2},
+    {'icon': Icons.school_rounded, 'label': 'Learn', 'index': 3},
+    {'icon': Icons.person_rounded, 'label': 'Profile', 'index': 4},
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // 1. Wrap the entire bar in a Padding widget to ensure it doesn't overlap the phone's safe area (if not using SafeArea)
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
-      child: Container(
-        height: 65, // Fixed height for the bar
-        decoration: BoxDecoration(
-          color: AppColors.primary, // Dark teal color
-          borderRadius: BorderRadius.circular(30), // Highly rounded corners
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.buttonShadow, // Dark shadow color
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
+    return Container(
+      // FIX: Replaced AppColors.surface with AppColors.background to resolve "getter 'surface' isn't defined" error.
+      decoration: BoxDecoration(
+        color: AppColors.background, // Using background as a common defined color
+        boxShadow: [
+          BoxShadow(
+            // Subtle shadow for lift effect
+            color: AppColors.darkText.withAlpha(0x33),
+            spreadRadius: 0,
+            blurRadius: 15,
+            offset: const Offset(0, -5),
+          ),
+        ],
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30), // Increased rounding
+          topRight: Radius.circular(30),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: _items.map((item) {
-            final isSelected = item.index == currentIndex;
-            // White for active, Grey for inactive
-            final color = isSelected ? AppColors.lightText : AppColors.secondary;
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: onItemSelected, // This links the UI tap event to the required callback
+          type: BottomNavigationBarType.fixed, // ensures items are evenly spaced
+          backgroundColor: AppColors.primary,
 
-            return InkWell(
-              onTap: () {
-                if (!isSelected) {
-                  // NOTE: Use the actual screen if you want navigation to work!
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (ctx) => _getScreen(item.index)),
-                  );
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(item.icon, color: color, size: 28),
-                    // If you want to show labels, uncomment this (though the design image doesn't show them):
-                    /*
-                    Text(
-                      item.label,
-                      style: TextStyle(
-                        color: color,
-                        fontSize: 10,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                      ),
-                    ),
-                    */
-                  ],
-                ),
-              ),
+          // Styling for selected items (Uses AppColors.action - Orange)
+          selectedItemColor: AppColors.action,
+          selectedIconTheme: const IconThemeData(size: 28),
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+
+          // Styling for unselected items (Uses a muted white/lightText)
+          unselectedItemColor: AppColors.lightText.withAlpha(0xAA), // Less visible than selected
+          unselectedIconTheme: const IconThemeData(size: 24),
+          unselectedLabelStyle: const TextStyle(fontSize: 11),
+
+          elevation: 0, // Elevation is handled by the container's shadow
+
+          items: navItems.map((item) {
+            return BottomNavigationBarItem(
+              icon: Icon(item['icon']),
+              label: item['label'],
             );
           }).toList(),
         ),
       ),
     );
   }
-}
-
-// Simple class to hold navigation item data
-class _NavItem {
-  final IconData icon;
-  final String label;
-  final int index;
-  const _NavItem({required this.icon, required this.label, required this.index});
 }

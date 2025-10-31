@@ -11,7 +11,7 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.labelText,
     this.isPassword = false,
-    this.keyboardType = TextInputType.text,
+    this.keyboardType = TextInputType.text, required String initialValue,
   });
 
   @override

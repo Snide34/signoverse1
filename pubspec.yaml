@@ -1,4 +1,4 @@
-name: signoversee
+name: signoverse
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -31,9 +31,15 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Ensure flutter_blue_plus is directly under dependencies:
+  flutter_blue_plus: ^1.29.0  # <--- ONLY TWO SPACES INDENTATION HERE
+
+  # The following adds the Cupertino Icons font to your application.
+  cupertino_icons: ^1.0.8
+  permission_handler: ^11.3.1
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
